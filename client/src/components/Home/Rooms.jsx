@@ -13,20 +13,33 @@ const Rooms = () => {
   const category = params.get('category')
 
   console.log(category)
-  const { data: rooms = [], isLoading } = useQuery({
+  const { data: rooms = [], isLoading, error } = useQuery({
     queryKey: ['rooms', category],
     queryFn: async () => {
       const { data } = await axiosCommon.get(`/rooms?category=${category}`)
-
       return data
     },
   })
 
   if (isLoading) return <LoadingSpinner />
 
+  if (error) {
+    return (
+      <Container>
+        <div className='flex items-center justify-center min-h-[calc(100vh-300px)]'>
+          <Heading
+            center={true}
+            title='Error loading rooms'
+            subtitle='Please try again later.'
+          />
+        </div>
+      </Container>
+    )
+  }
+
   return (
     <Container>
-      {rooms && rooms.length > 0 ? (
+      {Array.isArray(rooms) && rooms.length > 0 ? (
         <div className='pt-12 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6 gap-8'>
           {rooms.map(room => (
             <Card key={room._id} room={room} />

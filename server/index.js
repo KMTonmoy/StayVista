@@ -36,7 +36,7 @@ const verifyToken = async (req, res, next) => {
   })
 }
 
-const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@main.mq0mae1.mongodb.net/?retryWrites=true&w=majority&appName=Main`
+const uri = "mongodb+srv://tonmoyahamed2009:new@cluster0.50u3sb0.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0";
 const client = new MongoClient(uri, {
   serverApi: {
     version: ServerApiVersion.v1,
@@ -64,7 +64,7 @@ async function run() {
     })
     // Logout
     app.get('/logout', async (req, res) => {
-      try {
+      try { 
         res
           .clearCookie('token', {
             maxAge: 0,

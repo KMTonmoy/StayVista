@@ -43,7 +43,7 @@ const AuthProvider = ({ children }) => {
 
   const logOut = async () => {
     setLoading(true)
-    await axios.get(`${import.meta.env.VITE_API_URL}/logout`, {
+    await axios.get(`http://localhost:8000/logout`, {
       withCredentials: true,
     })
     return signOut(auth)
@@ -58,7 +58,7 @@ const AuthProvider = ({ children }) => {
   // Get token from server
   const getToken = async email => {
     const { data } = await axios.post(
-      `${import.meta.env.VITE_API_URL}/jwt`,
+      `http://localhost:8000/jwt`,
       { email },
       { withCredentials: true }
     )
