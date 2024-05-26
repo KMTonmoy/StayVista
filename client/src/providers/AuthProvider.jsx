@@ -43,7 +43,7 @@ const AuthProvider = ({ children }) => {
 
   const logOut = async () => {
     setLoading(true)
-    await axios.get(`http://localhost:8000/logout`, {
+    await axios.get(`${import.meta.env.VITE_API_URL}/logout`, {
       withCredentials: true,
     })
     return signOut(auth)
@@ -58,9 +58,23 @@ const AuthProvider = ({ children }) => {
   // Get token from server
   const getToken = async email => {
     const { data } = await axios.post(
-      `http://localhost:8000/jwt`,
+      `${import.meta.env.VITE_API_URL}/jwt`,
       { email },
       { withCredentials: true }
+    )
+    return data
+  }
+
+  // save user
+  const saveUser = async user => {
+    const currentUser = {
+      email: user?.email,
+      role: 'guest',
+      status: 'Verified',
+    }
+    const { data } = await axios.put(
+      `${import.meta.env.VITE_API_URL}/user`,
+      currentUser
     )
     return data
   }
@@ -71,6 +85,7 @@ const AuthProvider = ({ children }) => {
       setUser(currentUser)
       if (currentUser) {
         getToken(currentUser.email)
+        saveUser(currentUser)
       }
       setLoading(false)
     })
